@@ -1,6 +1,11 @@
 # WINREG
 A library for the Windows OS registry CLI. Requires Deno run permission for all of the functions. Input is not sanitized so **DO NOT ALLOW USER INPUT**.
 
+## Import
+```ts
+import * as winreg from 'https://deno.land/x/winreg@v0.1/index.ts'
+```
+
 ## Query
 Queries for a KeyName with options a second parameter contained in an object. The following is a list of the options in that object. It's important to note that the searchX options only work when the searchPattern option is provided. **DO NOT ALLOW USER INPUT**
 

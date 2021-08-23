@@ -41,8 +41,11 @@ Compares two registry locations at the given locations. **DO NOT ALLOW USER INPU
 await compare('HKEY_CURRENT_USER\\Software\\Valve', 'HKEY_CURRENT_USER\\Software\\Valve\\Steam');
 ```
 
+## Export
+Exports all keys and subkeys to a .reg file at the specificed FileName location. **DO NOT ALLOW USER INPUT**
+
+## Import
+Imports all keys in a .reg file provided to your registry. **DO NOT ALLOW USER INPUT**
+
 ## Unfinished Commands
-* Compare
-* Export
-* Import
 * Flags

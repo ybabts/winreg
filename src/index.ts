@@ -75,7 +75,7 @@ export async function query(KeyName: string, _options: queryOptions = new Object
         stderr: 'piped'
     }).output());
     const lines = blob.toString().split('\r\n').filter((v: string) => v.length !== 0 && !v.includes(KeyName) && !v.includes('End of search:')).map((v: string) => {
-    const arr = v.replace(/\s\s+/g,' ').trim().split(' ');
+        const arr = v.replace(/\s\s+/g,' ').trim().split(' ');
         return [arr[0],{
             type: arr[1],
             value: arr.slice(2).join(' ') || null
@@ -268,4 +268,42 @@ export async function unload(KeyName: string, FileName: string, _options: unload
         stderr: 'piped'
     }).output());
     return blob.toString();
+}
+
+interface compareOptions {
+    valueName?: string,
+    emptyValueName?: boolean,
+    subKeys?: boolean,
+    /** @description Specifies the key should be accessed using the 32-bit registry view. */
+    viewReg32Bit?: boolean,
+    /** @description Specifies the key should be accessed using the 64-bit registry view. */
+    viewReg64Bit?: boolean
+}
+
+/**
+ * @description Compares all values under Registry to another Registry. 
+ */
+export async function compare(KeyName1: string, KeyName2: string, _options: compareOptions = new Object): Promise<string> {
+    if(!KeyNameRegex.test(KeyName1)) throw new Error(`${KeyName1} not of WIN_REG_KEYNAME`);
+    if(!KeyNameRegex.test(KeyName2)) throw new Error(`${KeyName2} not of WIN_REG_KEYNAME`);
+    let command = `REG COMPARE ${KeyName1} ${KeyName2}`;
+    if(_options.valueName) command += ` /v ${_options.valueName}`;
+    if(_options.emptyValueName) command += ' /ve';
+    if(_options.subKeys) command += ' /s';
+    if(_options.viewReg32Bit) command += ' /reg:32';
+    if(_options.viewReg64Bit) command += ' /reg:64';
+    const blob = new TextDecoder().decode(await Deno.run({
+        cmd: ['cmd','/c',...command.split(' ')],
+        stdout: 'piped',
+        stderr: 'piped'
+    }).output());
+    const lines = blob.toString().split('\r\n').filter((v: string) => v.length !== 0 && !v.includes('The operation completed successfully.') && !v.includes('Result Compared:')).map((v: string) => {
+        const arr = v.replace(/\s\s+/g,' ').trim().split(' ');
+        return [arr[3],{
+            compare: arr[0],
+            path: arr[2],
+            value: arr.slice(4).join(' ') || null
+        }];
+    });
+    return Object.fromEntries(lines);
 }

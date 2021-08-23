@@ -30,6 +30,19 @@ Loads a registry entry from FileName to KeyName. **DO NOT ALLOW USER INPUT**.
 ## Unload
 Unloads the registry entry at KeyName location. **DO NOT ALLOW USER INPUT**.
 
+
+## Compare
+Compares two registry locations at the given locations. **DO NOT ALLOW USER INPUT**
+> The symbols at the front of each outputted line are defined as:
+>   = means FullKey1 data is equal to FullKey2 data
+>   < refers to FullKey1 data and is different than FullKey2 data
+>   \> refers to FullKey2 data and is different than Fullkey1 data
+
+###### Usage
+```ts
+await compare('HKEY_CURRENT_USER\\Software\\Valve', 'HKEY_CURRENT_USER\\Software\\Valve\\Steam');
+```
+
 ## Unfinished Commands
 * Compare
 * Export

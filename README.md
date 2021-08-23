@@ -33,12 +33,10 @@ Unloads the registry entry at KeyName location. **DO NOT ALLOW USER INPUT**.
 
 ## Compare
 Compares two registry locations at the given locations. **DO NOT ALLOW USER INPUT**
-> The symbols at the front of each outputted line are defined as:
->   = means FullKey1 data is equal to FullKey2 data
->   < refers to FullKey1 data and is different than FullKey2 data
->   \> refers to FullKey2 data and is different than Fullkey1 data
-
-###### Usage
+> The symbols at the front of each outputted line are defined as:<br>
+>   = means FullKey1 data is equal to FullKey2 data<br>
+>   < refers to FullKey1 data and is different than FullKey2 data<br>
+>   \> refers to FullKey2 data and is different than Fullkey1 data<br>
 ```ts
 await compare('HKEY_CURRENT_USER\\Software\\Valve', 'HKEY_CURRENT_USER\\Software\\Valve\\Steam');
 ```

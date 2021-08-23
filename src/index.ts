@@ -192,7 +192,7 @@ interface saveOptions {
  */
 export async function save(KeyName: string, FileName: string, _options: saveOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG SAVE ${KeyName} ${FileName} /f`;
+    let command = `REG SAVE ${KeyName} ${FileName} /y`;
     if(_options.subKeys) command += ' /s';
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
@@ -306,4 +306,20 @@ export async function compare(KeyName1: string, KeyName2: string, _options: comp
         }];
     });
     return Object.fromEntries(lines);
+}
+
+/**
+ * @description Exports key and all subkeys at KeyName location to a .reg file.
+ */
+export async function exportKey(KeyName: string, FileName: string, _options: saveOptions = new Object): Promise<string> {
+    if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
+    let command = `REG EXPORT ${KeyName} ${FileName} /y`;
+    if(_options.viewReg32Bit) command += ' /reg:32';
+    if(_options.viewReg64Bit) command += ' /reg:64';
+    const blob = new TextDecoder().decode(await Deno.run({
+        cmd: ['cmd','/c',...command.split(' ')],
+        stdout: 'piped',
+        stderr: 'piped'
+    }).output());
+    return blob.toString();
 }

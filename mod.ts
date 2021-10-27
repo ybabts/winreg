@@ -81,7 +81,7 @@ export async function query(KeyName: string, _options: queryOptions = new Object
         viewReg32Bit: '/reg:32',
         viewReg64Bit: '/reg:64'
     };
-    const command = _buildCommand(`QUERY ${KeyName}`, _options, Object.fromEntries(Object.keys(translation).map(v => [v,false])), translation);
+    const command = _buildCommand(`QUERY "${KeyName}"`, _options, Object.fromEntries(Object.keys(translation).map(v => [v,false])), translation);
     const blob = new TextDecoder().decode(await Deno.run({
         cmd: ['cmd','/c',...command.split(' ')],
         stdout: 'piped'

@@ -53,7 +53,7 @@ interface queryResponse {
  */
 export async function query(KeyName: string, _options: queryOptions = new Object): Promise<Record<string, queryResponse>> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG QUERY "${KeyName}"`;
+    let command = `REG QUERY ${KeyName}`;
     if(_options.valueName) command += ` /v ${_options.valueName}`;
     if(_options.defaultValue) command += ' /ve';
     if(_options.recursive) command += ' /s';
@@ -107,7 +107,7 @@ interface addOptions {
  */
 export async function add(KeyName: string, _options: addOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG ADD "${KeyName}" /f`;
+    let command = `REG ADD ${KeyName} /f`;
     if(_options.valueName) command += ` /v ${_options.valueName}`;
     if(_options.emptyValueName) command += ' /ve';
     if(_options.dataType) command += ' /t';
@@ -141,7 +141,7 @@ interface deleteOptions {
 export async function remove(KeyName: string, _options: deleteOptions = new Object): Promise<string> {
     await checkPermissions();
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG DELETE "${KeyName}" /f`;
+    let command = `REG DELETE ${KeyName} /f`;
     if(_options.valueName) command += ` /v ${_options.valueName}`;
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
@@ -167,7 +167,7 @@ interface copyOptions {
 export async function copy(KeyName1: string, KeyName2: string, _options: copyOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName1)) throw new Error(`${KeyName1} not of WIN_REG_KEYNAME`);
     if(!KeyNameRegex.test(KeyName2)) throw new Error(`${KeyName2} not of WIN_REG_KEYNAME`);
-    let command = `REG COPY "${KeyName1}" "${KeyName2}" /f`;
+    let command = `REG COPY ${KeyName1} ${KeyName2} /f`;
     if(_options.subKeys) command += ' /s';
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
@@ -192,7 +192,7 @@ interface saveOptions {
  */
 export async function save(KeyName: string, FileName: string, _options: saveOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG SAVE "${KeyName}" "${FileName}" /y`;
+    let command = `REG SAVE ${KeyName} ${FileName} /y`;
     if(_options.subKeys) command += ' /s';
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
@@ -215,7 +215,7 @@ interface restoreOptions {
  */
 export async function restore(KeyName: string, FileName: string, _options: restoreOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG RESTORE "${KeyName}" "${FileName}"`;
+    let command = `REG RESTORE ${KeyName} ${FileName}`;
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
     const blob = new TextDecoder().decode(await Deno.run({
@@ -237,7 +237,7 @@ interface loadOptions {
  */
 export async function load(KeyName: string, FileName: string, _options: loadOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG LOAD "${KeyName}" "${FileName}"`;
+    let command = `REG LOAD ${KeyName} ${FileName}`;
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
     const blob = new TextDecoder().decode(await Deno.run({
@@ -259,7 +259,7 @@ interface unloadOptions {
  */
 export async function unload(KeyName: string, FileName: string, _options: unloadOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG UNLOAD "${KeyName}" "${FileName}"`;
+    let command = `REG UNLOAD ${KeyName} ${FileName}`;
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
     const blob = new TextDecoder().decode(await Deno.run({
@@ -286,7 +286,7 @@ interface compareOptions {
 export async function compare(KeyName1: string, KeyName2: string, _options: compareOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName1)) throw new Error(`${KeyName1} not of WIN_REG_KEYNAME`);
     if(!KeyNameRegex.test(KeyName2)) throw new Error(`${KeyName2} not of WIN_REG_KEYNAME`);
-    let command = `REG COMPARE "${KeyName1}" "${KeyName2}"`;
+    let command = `REG COMPARE ${KeyName1} ${KeyName2}`;
     if(_options.valueName) command += ` /v ${_options.valueName}`;
     if(_options.emptyValueName) command += ' /ve';
     if(_options.subKeys) command += ' /s';
@@ -313,7 +313,7 @@ export async function compare(KeyName1: string, KeyName2: string, _options: comp
  */
 export async function exportKey(KeyName: string, FileName: string, _options: saveOptions = new Object): Promise<string> {
     if(!KeyNameRegex.test(KeyName)) throw new Error(`${KeyName} not of WIN_REG_KEYNAME`);
-    let command = `REG EXPORT "${KeyName}" ${FileName} /y`;
+    let command = `REG EXPORT ${KeyName} ${FileName} /y`;
     if(_options.viewReg32Bit) command += ' /reg:32';
     if(_options.viewReg64Bit) command += ' /reg:64';
     const blob = new TextDecoder().decode(await Deno.run({
